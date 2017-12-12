@@ -20,7 +20,7 @@ print(str(state_temp))
 print(str(annual_aqi))
 
 ui <- navbarPage("Temperatures and AQI",
-                 tabPanel("Trend",
+                 tabPanel("Temperature Trend",
                           sidebarLayout(
                             sidebarPanel(
                               radioButtons("dataset", "Dataset Selection",
@@ -29,11 +29,13 @@ ui <- navbarPage("Temperatures and AQI",
                               
                               radioButtons("type", "Type",
                                            choices = c("Year", "Month", "Year and Month"),
-                                           selected = "Year and Month"),
-                              
+                                           selected = "Year and Month"), # Choose year if you want to analyze
+                                                                         # yearly average temperature.
+                                                                         # Choose month if you want to analyze
+                                                                         # monthly average temperature.
                               radioButtons("ConfidenceInterval", "Confidence Interval",
-                                           choices = c("TRUE", "FALSE"),
-                                           selected = "FALSE"),
+                                           choices = c("TRUE", "FALSE"), # Select true if you want to display
+                                           selected = "FALSE"),          # confidence interval around smooth
                               
                               sliderInput("year", "Year", min = 1743, max = 2013,
                                           value = c(2000, 2013)),
@@ -41,27 +43,31 @@ ui <- navbarPage("Temperatures and AQI",
                               sliderInput("month", "Month", min = 1, max = 12,
                                           value = c(1, 12)),
                               
-                              selectizeInput("CountryInput", "Country", unique(country_temp$Country), selected = NULL, multiple = T)
+                              selectizeInput("CountryInput", "Country", unique(country_temp$Country), 
+                                             selected = NULL, multiple = T)
                             ),
                             mainPanel(plotOutput("trendplot"))
                           )
                  ),
-                 tabPanel("Map",
+                 tabPanel("Temperature Map",
                           sidebarLayout(
                             sidebarPanel (radioButtons("datasetMap", "Dataset Selection",
                                                        choices = c("GlobalLandTemperaturesByCountry","GlobalLandTemperaturesByState"),
                                                        selected = "GlobalLandTemperaturesByCountry"), # Choose analysis with which dataset
                                           
-                                          radioButtons("tempVar", "Temperature Variation",
-                                                       choices = c("FALSE","TRUE"),
+                                          radioButtons("tempVar", "Temperature Variation", # Select TRUE if you want to analyze temperature
+                                                       choices = c("FALSE","TRUE"),        # variation between two year.
                                                        selected = "FALSE"),
                                           
-                                          sliderInput("yearVar", "Year for Temperature Variation ", min = 1743, max = 2013,
-                                                      value = c(2000, 2013)),
+                                          sliderInput("yearVar", "Year for Temperature Variation ", 
+                                                      min = 1743, max = 2013,
+                                                      value = c(2000, 2013)),             # Use this slider when analyze temperature variation
                                           
-                                          numericInput("yearMap", "Year", min = 1743, max = 2013,
-                                                       value = 2000)),
-                            mainPanel(wellPanel(
+                                          numericInput("yearMap", "Year", 
+                                                       min = 1743, max = 2013, 
+                                                       value = 2000)),                    # Use this input year when you select FALSE in Temperature
+                                                                                          # Variation button
+                            mainPanel(wellPanel(           
                               conditionalPanel(
                                 condition = "input.datasetMap == 'GlobalLandTemperaturesByState'",
                                 plotOutput("plotMap")
