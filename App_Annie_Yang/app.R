@@ -112,7 +112,9 @@ ui <- navbarPage("Temperatures and AQI",
                                 condition = "input.AnalysisType == 'Health Concern By AQI'",
                                 plotOutput("HealthConcern")
                               )                 
-                            ))
+                            ),
+                            hr(),
+                            tableOutput("AQI"))
                           ))
 )
 
@@ -127,11 +129,17 @@ server <- function(input, output) {
     if (input$dataset=="GlobalTemperature") {
       data <- glb_temp
       if (input$type=="Year") {
-        avg_temp(data, year = c(input$year[1]:input$year[2]) , month = c(input$month[1]:input$month[2]),type=1, con=input$ConfidenceInterval)
+        avg_temp(data, year = c(input$year[1]:input$year[2]) , 
+                 month = c(input$month[1]:input$month[2]),type=1, con=input$ConfidenceInterval)
+        
       } else if (input$type=="Month"){
-        avg_temp(data, year = c(input$year[1]:input$year[2]) , month = c(input$month[1]:input$month[2]),type=2, con=input$ConfidenceInterval)
+        avg_temp(data, year = c(input$year[1]:input$year[2]) , 
+                 month = c(input$month[1]:input$month[2]),type=2, con=input$ConfidenceInterval)
+        
       } else {
-        avg_temp(data, year = c(input$year[1]:input$year[2]) , month = c(input$month[1]:input$month[2]),type=c(1,2), con=input$ConfidenceInterval) 
+        avg_temp(data, year = c(input$year[1]:input$year[2]) , 
+                 month = c(input$month[1]:input$month[2]),type=c(1,2), con=input$ConfidenceInterval) 
+        
       }
     } else { # When GlobalLandTemperaturesByCountry is selected.
       data <- country_temp
@@ -178,6 +186,16 @@ server <- function(input, output) {
                         year=c(input$YearAQI[1]:input$YearAQI[2]),plot=input$PlotType)
     }
   })
+  
+  # Show AQI category description
+  
+  AQI_category <- reactive({load(file = "data/AQI.rda")
+  AQI[-7, ]})
+  
+  output$AQI <- renderTable({
+    AQI_category()
+  })
+  
   
 }
 
