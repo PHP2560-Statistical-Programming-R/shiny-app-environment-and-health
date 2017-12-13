@@ -14,7 +14,7 @@ install_packages = function(names)
 
 install_packages(c("devtools","dplyr", "ggplot2","reshape2",
                    "roxygen2","ggpubr", "readr", "rvest","XML", "testthat",
-                   "choroplethr","choroplethrMaps","plotly","countrycode"))
+                   "choroplethr","choroplethrMaps","plotly","countrycode","Rmisc"))
 
 # Our functions are based on the following datasets.
 
@@ -39,4 +39,5 @@ load(file = "data/AQI.rda")
 load(file = "data/GlobalTemperatures.rda")
 load(file = "data/GlobalLandTemperaturesByCountry.rda")
 load(file = "data/GlobalLandTemperaturesByState.rda")
+#Load AirQuality tracking dataset.
 load(file = "data/AirQuality_Tracking.rda")
