@@ -1,6 +1,7 @@
 #' @title Check and plot air quality by state
 #'
-#' @description 
+#' @description This function gets the data from CDC, the outcome is a combination outcome of 
+#' monitoring ozone and PM2.5
 #' @param data A data.frame. The default dataset is AirQuality_Tracking.
 #' @param year A numeric vector.
 #' @examples
