@@ -1,23 +1,17 @@
 library(shiny)
 library(ggplot2)
 library (dplyr)
-library(readr)
-library(markdown)
 
 library(choroplethr)
 library(choroplethrMaps)
 library(plotly)
 library(countrycode)
 
-glb_temp <- read_csv("data-raw/GlobalTemperatures.csv")
-country_temp<- read_csv("data-raw/GlobalLandTemperaturesByCountry.csv")
-state_temp<- read_csv("data-raw/GlobalLandTemperaturesByState.csv")
-annual_aqi<- read_csv("data-raw/annual_aqi_by_cbsa_2000-2017.csv")
+glb_temp<-get(load(file = "data/glb_temp.rda"))
+country_temp<-get(load(file = "data/country_temp.rda"))
+state_temp<-get(load(file = "data/state_temp.rda"))
+annual_aqi<-get(load(file = "data/annual_aqi.rda"))
 
-print(str(glb_temp)) # verify that app can successfully read the data
-print(str(country_temp))
-print(str(state_temp))
-print(str(annual_aqi))
 
 ui <- navbarPage("Temperatures and AQI",
                  tabPanel("Temperature Trend",
@@ -83,14 +77,17 @@ ui <- navbarPage("Temperatures and AQI",
                  tabPanel("Air Quality Index",
                           sidebarLayout(
                             sidebarPanel(
+                              shinyjs::useShinyjs(), # reset CBSA when you click the button 
+                              div(id = "side-panel",
+                              # actionButton("reset_input", "Reset Inputs"),
+                              # tags$hr(),
                               radioButtons("AnalysisType", "Analysis Selection",
                                            choices = c("Boxplot of AQI","Health Concern By AQI"),
                                            selected = "Boxplot of AQI"),
                               
                               sliderInput("YearAQI", "Year", min=2000, max=2017, value= c(2000,2017)),
                               
-                              selectizeInput("CBSA_aqi", "CBSA", unique(annual_aqi$CBSA), 
-                                             selected = c("Providence-Warwick, RI-MA"), multiple = T),
+                              uiOutput("CBSAcontrols"), # If choose Boxplot, the CBSA input cannot be multiple
                               
                               selectizeInput("categoryInput", "Health Concern Level", 
                                              c("Good","Moderate","UnhealthyForSensitiveGroup","Unhealthy",
@@ -100,6 +97,11 @@ ui <- navbarPage("Temperatures and AQI",
                               radioButtons("PlotType", "Plot Selection",
                                            choices = c("line","bar"),
                                            selected = "line")
+                              ),
+                              tags$hr(),
+                              actionButton("resetCBSA", "Reset CBSA"),
+                              actionButton("resetHealth", "Reset Health Concern"),
+                              actionButton("reset_input", "Reset All")
                             ),
                             
                             mainPanel(wellPanel(
@@ -116,6 +118,7 @@ ui <- navbarPage("Temperatures and AQI",
                             hr(),
                             tableOutput("AQI"))
                           ))
+                 
 )
 
 server <- function(input, output) {
@@ -144,11 +147,14 @@ server <- function(input, output) {
     } else { # When GlobalLandTemperaturesByCountry is selected.
       data <- country_temp
       if (input$type=="Year"){
-        avg_temp(data, year = c(input$year[1]:input$year[2]) , month = c(input$month[1]:input$month[2]) ,type=1, country = input$CountryInput, con=input$ConfidenceInterval)
+        avg_temp(data, year = c(input$year[1]:input$year[2]) , month = c(input$month[1]:input$month[2]) ,
+                 type=1, country = input$CountryInput, con=input$ConfidenceInterval)
       } else if (input$type=="Month") {
-        avg_temp(data, year = c(input$year[1]:input$year[2]) , month = c(input$month[1]:input$month[2]) ,type=2, country = input$CountryInput, con=input$ConfidenceInterval)
+        avg_temp(data, year = c(input$year[1]:input$year[2]) , month = c(input$month[1]:input$month[2]) ,
+                 type=2, country = input$CountryInput, con=input$ConfidenceInterval)
       } else {
-        avg_temp(data, year = c(input$year[1]:input$year[2]) , month = c(input$month[1]:input$month[2]) ,type=c(1,2), country = input$CountryInput, con=input$ConfidenceInterval)
+        avg_temp(data, year = c(input$year[1]:input$year[2]) , month = c(input$month[1]:input$month[2]) ,
+                 type=c(1,2), country = input$CountryInput, con=input$ConfidenceInterval)
       }
     }
   }
@@ -171,7 +177,19 @@ server <- function(input, output) {
       temp_state(data,input$yearMap)
     }
   })
+
+  # Show AQI plot
   
+  output$CBSAcontrols<-renderUI({
+    if (input$AnalysisType=="Boxplot of AQI"){
+      selectizeInput("CBSA_aqi", "CBSA", unique(annual_aqi$CBSA), 
+                     selected = c("Providence-Warwick, RI-MA"), multiple = F)
+    } else {
+      selectizeInput("CBSA_aqi", "CBSA", unique(annual_aqi$CBSA), 
+                     selected = c("Providence-Warwick, RI-MA"), multiple = T)
+    }
+  })
+
   output$BoxPlot<-renderPlot(
     {
       if (input$AnalysisType=="Boxplot of AQI"){
@@ -187,6 +205,22 @@ server <- function(input, output) {
     }
   })
   
+
+  observeEvent(
+    input$reset_input,{
+    shinyjs::reset("side-panel")
+  })
+  
+  observeEvent(
+    input$resetCBSA,{
+      shinyjs::reset("CBSA_aqi")
+    })
+  
+  observeEvent(
+    input$resetHealth,{
+      shinyjs::reset("categoryInput")
+    })
+  
   # Show AQI category description
   
   AQI_category <- reactive({load(file = "data/AQI.rda")
@@ -195,6 +229,7 @@ server <- function(input, output) {
   output$AQI <- renderTable({
     AQI_category()
   })
+  
   
   
 }
