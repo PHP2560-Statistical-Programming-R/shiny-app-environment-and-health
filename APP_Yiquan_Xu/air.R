@@ -1,4 +1,6 @@
 library(shiny)
+library(plotly)
+library(dplyr)
 AirQuality_Tracking <- read.csv("data-raw/AirQuality_Tracking.csv")
 ui <- fluidPage(headerPanel("AirQuality"),
                 sidebarPanel(
