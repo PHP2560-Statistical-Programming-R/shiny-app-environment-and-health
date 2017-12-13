@@ -2,7 +2,7 @@
 
 palette(c("#E41A1C", "#377EB8", "#4DAF4A", "#984EA3",
           "#FF7F00", "#FFFF33", "#A65628", "#F781BF", "#999999"))
-
+annual_aqi <- read.csv("data-raw/annual_aqi_by_cbsa_2000-2017.csv")
 library(shiny)
 
 ui <- fluidPage(
