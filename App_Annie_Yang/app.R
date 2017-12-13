@@ -79,8 +79,6 @@ ui <- navbarPage("Temperatures and AQI",
                             sidebarPanel(
                               shinyjs::useShinyjs(), # reset CBSA when you click the button 
                               div(id = "side-panel",
-                              # actionButton("reset_input", "Reset Inputs"),
-                              # tags$hr(),
                               radioButtons("AnalysisType", "Analysis Selection",
                                            choices = c("Boxplot of AQI","Health Concern By AQI"),
                                            selected = "Boxplot of AQI"),
