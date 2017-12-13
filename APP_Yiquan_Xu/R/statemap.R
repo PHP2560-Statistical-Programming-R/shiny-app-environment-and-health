@@ -7,7 +7,7 @@
 #' checkAirQuality(year=2010)
 #'
 #' @export
-checkAirQuality <- function(data = AirQuality_Tracking, year){
+checkAirQuality <- function(data = AirQuality_Tracking, year, Color = 'Purples'){
   map <- data%>%
     filter(Value<=1000 & Unit != "%" & ReportYear == year)%>%
     group_by(StateName)%>%
@@ -24,7 +24,7 @@ checkAirQuality <- function(data = AirQuality_Tracking, year){
   map_state <- plot_geo(map, locationmode = 'USA-states') %>%
     add_trace(
       z = ~AirQuality, text = ~StateName, locations = ~code,
-      color = ~AirQuality, colors = 'Purples'
+      color = ~AirQuality, colors = Color
     ) %>%
     colorbar(title = "AirQuality") %>%
     layout(
