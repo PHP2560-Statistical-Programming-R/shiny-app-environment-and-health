@@ -80,7 +80,7 @@ avg_temp <- function(data, type, year, month, country, con = "FALSE"){
       filter(Year %in% year & Month %in% month)%>%
       ggplot(aes(x=dt, y=AverageTemperature,colour=reorder(Month.String,-AverageTemperature,mean)))+
       geom_smooth(method="loess",se=con)+
-      facet_wrap(~Country,scales="free_x")+
+      facet_wrap(~Country,scales="free")+
       labs(title="Monthly Average Temperatures By Country",
            x="Year",
            y="Average Temperature",
