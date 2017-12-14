@@ -1,22 +1,23 @@
 library(shiny)
-library(ggplot2)
-library (dplyr)
 
-library(choroplethr)
-library(choroplethrMaps)
-library(plotly)
-library(countrycode)
+# install necessary packages
 
+source("R/install_packages.R")
+
+# Import data
 glb_temp<-get(load(file = "data/glb_temp.rda"))
 country_temp<-get(load(file = "data/country_temp.rda"))
 state_temp<-get(load(file = "data/state_temp.rda"))
 annual_aqi<-get(load(file = "data/annual_aqi.rda"))
-
+aqi_pollutant<-get(load(file = "data/aqi_pollutant.rda"))
 
 ui <- navbarPage("Temperatures and AQI",
                  tabPanel("Temperature Trend",
                           sidebarLayout(
                             sidebarPanel(
+                              shinyjs::useShinyjs(),
+                              div(id = "ResetTemp",
+                                  
                               radioButtons("dataset", "Dataset Selection",
                                            choices = c("GlobalTemperature", "GlobalLandTemperaturesByCountry"),
                                            selected = "GlobalTemperature"), # Choose analysis with which dataset
@@ -39,6 +40,12 @@ ui <- navbarPage("Temperatures and AQI",
                               
                               selectizeInput("CountryInput", "Country", unique(country_temp$Country), 
                                              selected = NULL, multiple = T)
+                            ),
+                            
+                            tags$hr(),
+                            actionButton("resetCountry", "Reset Country"),
+                            actionButton("resetAll1", "Reset All")
+                            
                             ),
                             mainPanel(plotOutput("trendplot"))
                           )
@@ -74,7 +81,8 @@ ui <- navbarPage("Temperatures and AQI",
                             ))
                           )
                  ),
-                 tabPanel("Air Quality Index",
+                 navbarMenu("Air Quality Index",
+                 tabPanel("AQI Plot",
                           sidebarLayout(
                             sidebarPanel(
                               shinyjs::useShinyjs(), # reset CBSA when you click the button 
@@ -97,7 +105,7 @@ ui <- navbarPage("Temperatures and AQI",
                                            selected = "line")
                               ),
                               tags$hr(),
-                              actionButton("resetCBSA", "Reset CBSA"),
+                              actionButton("resetCBSA", "Reset CBSA"),             # Reset Button
                               actionButton("resetHealth", "Reset Health Concern"),
                               actionButton("reset_input", "Reset All")
                             ),
@@ -113,9 +121,32 @@ ui <- navbarPage("Temperatures and AQI",
                                 plotOutput("HealthConcern")
                               )                 
                             ),
-                            hr(),
+                            tags$hr(),
                             tableOutput("AQI"))
-                          ))
+                          )),
+                 tabPanel("Pollutant AQI Trend",
+                          sidebarLayout(
+                            
+                            sidebarPanel(
+                              shinyjs::useShinyjs(), # reset CBSA when you click the button 
+                              div(id = "ResetTrend",
+                              selectizeInput("CityInput", "City", unique(aqi_pollutant$city), 
+                                             selected = c("New York"), multiple = T),
+                              
+                              sliderInput("YearP", "Year", min=2000, max=2016, value= c(2000,2016)),
+                              
+                              selectizeInput("Pollutant", "pollutant", c("AverageNo2","AverageO3", "AverageSo2", "AverageCo"), 
+                                             selected = c("AverageNo2"), multiple = T)
+                            ),
+                            tags$hr(),
+                            actionButton("resetCity", "Reset City"),
+                            actionButton("resetPollutant", "Reset Pollutant"),
+                            actionButton("resetAll", "Reset All")
+                            ),
+                            mainPanel(plotOutput("PollutantTrend"))
+                          )
+                 )
+                 )
                  
 )
 
@@ -124,6 +155,7 @@ server <- function(input, output) {
   source("R/map_temp.R")
   source("R/boxplot_aqi.R")
   source("R/aqi_healthconcern.R")
+# Show temperature trend
   
   output$trendplot <- renderPlot({
     
@@ -158,6 +190,17 @@ server <- function(input, output) {
   }
   )
   
+  observeEvent(
+    input$resetCountry,{
+      shinyjs::reset("CountryInput")
+    })
+  
+  observeEvent(
+    input$resetAll1,{
+      shinyjs::reset("ResetTemp")
+    })
+ 
+  # Show temperature map
   output$plotMap2 <- renderPlotly({
     if (input$datasetMap=="GlobalLandTemperaturesByCountry"){
       data<-country_temp
@@ -228,8 +271,38 @@ server <- function(input, output) {
     AQI_category()
   })
   
+  # Show AQI Pollutant Trend
+  output$PollutantTrend<-renderPlot({
+    aqi_pollutant <- aqi_pollutant %>% 
+      filter(city %in% input$CityInput)%>%
+      filter(year >= input$YearP[1] & year <= input$YearP[2])%>% 
+      select(dt,city,input$Pollutant)
+    
+    aqi_pollutant%>%
+      tidyr::gather("id", "Pollutant", (ncol(aqi_pollutant)-length(input$Pollutant)+1):ncol(aqi_pollutant)) %>%
+      ggplot(aes_string(x = "dt", y = "Pollutant", colour="city")) +
+      geom_line()+
+      facet_wrap(~id,scales="free_y")+
+      theme_bw()+
+      labs(title = "Average AQI By City",
+           x="Time",
+           y="Average AQI")
+  })
   
+  observeEvent(
+    input$resetAll,{
+      shinyjs::reset("ResetTrend")
+    })
   
+  observeEvent(
+    input$resetCity,{
+      shinyjs::reset("CityInput")
+    })
+  
+  observeEvent(
+    input$resetPollutant,{
+      shinyjs::reset("Pollutant")
+    })
 }
 
 shinyApp(ui = ui, server = server)
