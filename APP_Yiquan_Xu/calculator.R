@@ -1,10 +1,10 @@
 library(shiny)
-aqi <- read_csv("data-raw/annual_aqi_by_cbsa_2000-2017.csv")
+
 ui <- fluidPage(headerPanel(title = "Caculator"),
                 sidebarLayout(
                   sidebarPanel(
                  tabPanel(title="Summary Statistic",
-                          selectInput("city","City",unique(aqi$CBSA),
+                          selectInput("city","City",unique(annual_aqi$CBSA),
                                       selected = "Providence-Warwick, RI-MA")
                  ),
                  tabPanel(title = "health",
@@ -32,8 +32,8 @@ ui <- fluidPage(headerPanel(title = "Caculator"),
 server <- function(input, output) {
   source("R/stat.R")
   source("R/health_status.R")
-  output$stat <- renderTable(stat_func(data = aqi, cbsa = input$city))
-  output$health <- renderText(health_status(data = aqi, cbsa = input$city, year = input$year,
+  output$stat <- renderTable(stat_func(data = annual_aqi, cbsa = input$city))
+  output$health <- renderText(health_status(data = annual_aqi, cbsa = input$city, year = input$year,
                                             smoke = input$smoke, exercise = input$exercise,
                                             gene = input$gene))
   output$picture <-renderText({
