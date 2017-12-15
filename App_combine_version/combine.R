@@ -12,6 +12,9 @@ annual_aqi <- get(load(file = "data/annual_aqi.rda"))
 aqi_pollutant <- get(load(file = "data/aqi_pollutant.rda"))
 AirQuality_Tracking <- get(load(file = "data/AirQuality_Tracking.rda"))
 
+aqi <- annual_aqi%>%mutate(Per_CO = `Days CO`/sum(`Days CO`), Per_NO2 = `Days NO2`/sum(`Days NO2`),
+                           Per_Ozone = `Days Ozone`/sum(`Days Ozone`), Per_SO2 = `Days SO2`/sum(`Days SO2`))
+
 palette(c("#E41A1C", "#377EB8", "#4DAF4A", "#984EA3",
           "#FF7F00", "#FFFF33", "#A65628", "#F781BF", "#999999"))
 
@@ -86,9 +89,9 @@ ui <- navbarPage("Temperatures and AQI",
                               headerPanel('k-means clustering'),
                               tabsetPanel(
                                 tabPanel(title="Pollution",
-                                         selectInput('xcol', 'X Variable', names(annual_aqi)[14:17]),
-                                         selectInput('ycol', 'Y Variable', names(annual_aqi)[14:17],
-                                                     selected = names(annual_aqi)[15]),
+                                         selectInput('xcol', 'X Variable', names(aqi)[20:23]),
+                                         selectInput('ycol', 'Y Variable', names(aqi)[20:23],
+                                                     selected = names(aqi)[22]),
                                          numericInput('clusters', 'Cluster count', 3,
                                                       min = 1, max = 9),
                                          plotOutput('pollution')
@@ -345,7 +348,7 @@ server <- function(input, output) {
     })
   
   selectedData <- reactive({
-    annual_aqi[, c(input$xcol, input$ycol)]
+    aqi[, c(input$xcol, input$ycol)]
   })
   Data <- reactive(
     annual_aqi[,c(input$x,input$y)]
