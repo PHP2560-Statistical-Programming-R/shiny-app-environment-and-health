@@ -6,7 +6,7 @@ load(file = "data/pollution_us.rda")
 
 aqi_pollutant<-tidy_data(pollution_us,'Date Local',na="T")%>%
   group_by(year, month, city) %>%
-  summarise(
+  dplyr::summarise(
     AverageNo2=mean(no2_aqi,na.rm=T),
     AverageO3=mean(o3_aqi,na.rm=T),
     AverageSo2=mean(so2_aqi,na.rm=T),

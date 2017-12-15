@@ -30,7 +30,7 @@ map$State<- as.factor(map$State)
 map_select <- map %>% 
   select(Year,AverageTemperature,State) %>%
   group_by(Year, State) %>%
-  summarise(value=mean(AverageTemperature))
+  dplyr::summarise(value=mean(AverageTemperature))
 
 #Data frame must have a column named region (all lower case) and another one value.
 colnames(map_select)[2]<- "region"
@@ -79,7 +79,7 @@ temp_country<-function(data=GlobalLandTemperaturesByCountry, year, start, end, d
     na.omit()%>%
     select(Year,AverageTemperature,Country) %>%
     group_by(Year, Country) %>%
-    summarise(AvgTemp=mean(AverageTemperature))
+    dplyr::summarise(AvgTemp=mean(AverageTemperature))
   
   code<-countrycode(map_country$Country,'country.name', 'iso3c') # Converts long country name into country codes
   
