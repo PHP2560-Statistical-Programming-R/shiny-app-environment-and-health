@@ -12,8 +12,7 @@
 #' library(dplyr)
 #' library(Rmisc)
 
-
-stat_func<-function(data=aqi,cbsa){
+stat_func<-function(data=annual_aqi,cbsa){
   data_stat<-data%>%
     filter(CBSA==cbsa)
   stat_table <- as.array(summary(data_stat$`Median AQI`))
