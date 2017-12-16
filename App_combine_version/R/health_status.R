@@ -8,7 +8,7 @@
 #' @param exercise whether people has certain exercise every day, equal to -1 if you don't, else is 1. Default is 1
 #' @param gene whether people has certain gene may cause disease happen,equal to -1 for bad gene or 1 for good gene. Default is 1
 #' @seealso
-#' @ruturn
+#' @return
 #' @examples
 #'
 #' @export

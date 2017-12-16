@@ -175,7 +175,13 @@ ui <- navbarPage("Temperatures and AQI",
                                       mainPanel(
                                         tabsetPanel(
                                           tabPanel("Summary Statistic",tableOutput("stat")),
+                                          br(),
+                                          br(),
                                           tabPanel("Health",textOutput("health_text"),
+                                                   br(),
+                                                   hr(),
+                                                   br(),
+                                                   br(),
                                                    htmlOutput("picture"))
                                         )
                                       )
@@ -416,6 +422,7 @@ server <- function(input, output) {
   output$health_text <- renderText(health_status(data = annual_aqi, cbsa = input$city, year = input$yearcal,
                                             smoke = input$smoke, exercise = input$exercise,
                                             gene = input$gene))
+
   output$picture <-renderText({
     c(
       '<img src="',
