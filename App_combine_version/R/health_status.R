@@ -33,19 +33,19 @@ health_status<-function(data=annual_aqi, cbsa, year, smoke, exercise, gene){
     env_status = env_status - 3
   }
   if(smoke == "Yes"){
-    smoke = 1
+    smoke = -1
   } else{
-    smoke = 0
+    smoke = 1
   }
   if(exercise == "Yes"){
     exercise = 1
   } else{
-    exercise = 0
+    exercise = -1
   }
   if(gene == "Yes"){
-    gene = 1
+    gene = -1
   } else{
-    gene = 0
+    gene = 1
   }
   status = env_status + smoke + exercise + gene
   if(status>=4&status<=6){

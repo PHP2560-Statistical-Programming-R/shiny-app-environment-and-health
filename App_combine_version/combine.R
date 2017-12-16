@@ -174,10 +174,10 @@ ui <- navbarPage("Temperatures and AQI",
                                       ),
                                       mainPanel(
                                         tabsetPanel(
-                                          tabPanel("Summary Statistic",tableOutput("stat")),
+                                          tabPanel("Summary Statistic",tags$h3(tableOutput("stat"))),
                                           br(),
                                           br(),
-                                          tabPanel("Health",textOutput("health_text"),
+                                          tabPanel("Health",tags$em(tags$strong(tags$h3(textOutput("health_text")))),
                                                    br(),
                                                    hr(),
                                                    br(),
