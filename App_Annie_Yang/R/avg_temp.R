@@ -30,7 +30,7 @@ avg_temp <- function(data, type, year, month, country, con = "FALSE"){
     
     avg_temp_year<-glb_avg_temp %>% 
       filter(Year %in% year)%>%
-      group_by(Year) %>%
+      dplyr::group_by(Year) %>%
       dplyr::summarise(AverageTemp=mean(LandAverageTemperature)) %>% # Calculate yearly average temperature
       ungroup()%>%
       ggplot(aes(x = Year, y = AverageTemp)) +
@@ -67,7 +67,7 @@ avg_temp <- function(data, type, year, month, country, con = "FALSE"){
     
     avg_temp_year <- glb_avg_temp %>% 
       filter(Year %in% year)%>%
-      group_by(Year, Country) %>%
+      dplyr::group_by(Year, Country) %>%
       dplyr::summarise(AverageTemp=mean(AverageTemperature)) %>% # Calculate yearly average temperature by country
       ungroup()%>%
       ggplot(aes(x = Year, y = AverageTemp,colour=Country)) +
