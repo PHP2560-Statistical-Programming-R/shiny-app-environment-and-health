@@ -13,5 +13,5 @@ install_packages = function(names)
 }
 
 install_packages(c("dplyr", "ggplot2",
-                   "choroplethr","choroplethrMaps","plotly","countrycode"))
+                   "choroplethr","choroplethrMaps","plotly","countrycode","Rmisc"))
 
