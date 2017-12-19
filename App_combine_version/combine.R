@@ -152,7 +152,7 @@ ui <- navbarPage("Temperatures and AQI",
                  )
                  ),
                  tabPanel("Calculator",
-                          fluidPage(headerPanel(title = "Caculator"),
+                          fluidPage(headerPanel(title = "Calculator"),
                                     sidebarLayout(
                                       sidebarPanel(
                                         tabPanel(title="Summary Statistic",
