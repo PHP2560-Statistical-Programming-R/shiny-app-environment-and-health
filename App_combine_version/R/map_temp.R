@@ -8,43 +8,56 @@
 #' 
 #' @export
 
-# Loading Packages
-# library(choroplethr)
-# library(choroplethrMaps)
-# library(plotly)
-# library(countrycode)
 
 temp_state<-function(data=GlobalLandTemperaturesByState,year){
   
-map <- data %>%
-  mutate(Month=as.numeric(format(data$dt,"%m")), # Create new column month (decimal number)
-         Month.String=format(data$dt,"%B"), # Create string month (full name)
-         Year=as.numeric(format(data$dt,"%Y"))) %>% # Create new column year (4 digit)
-  na.omit() %>% filter(Country=="United States")
-
-map$State <- as.character(map$State)  
-map$State[map$State=="Georgia (State)"] <- "Georgia" # Changing Georgia (State)
-map$State<- as.factor(map$State)                    
-
-#' select columns of interest
-map_select <- map %>% 
-  select(Year,AverageTemperature,State) %>%
-  dplyr::group_by(Year, State) %>%
-  dplyr::summarise(value=mean(AverageTemperature))
-
-#Data frame must have a column named region (all lower case) and another one value.
-colnames(map_select)[2]<- "region"
-map_select$region<-tolower(map_select$region)
-
-map_state<-map_select %>%
-  filter(Year==year)
-
-map_state<-map_state[,2:3]
-
-print(state_choropleth(map_state,
-                       title = paste("Land Temperature",year," "), 
-                       num_colors = 8,
-                       legend = "Degrees"),reference_map=TRUE)
+  map <- data %>%
+    mutate(Month=as.numeric(format(data$dt,"%m")), # Create new column month (decimal number)
+           Month.String=format(data$dt,"%B"), # Create string month (full name)
+           Year=as.numeric(format(data$dt,"%Y"))) %>% # Create new column year (4 digit)
+    na.omit() %>% filter(Country=="United States")
+  
+  map$State <- as.character(map$State)  
+  map$State[map$State=="Georgia (State)"] <- "Georgia" # Changing Georgia (State)
+  map$State<- as.factor(map$State)                    
+  
+  # select columns of interest
+  map_select <- map %>% 
+    select(Year,AverageTemperature,State) %>%
+    dplyr::group_by(Year, State) %>%
+    dplyr::summarise(AvgTemp=mean(AverageTemperature))%>%
+    ungroup()
+  
+  map_state<-map_select %>%
+    filter(Year==year)
+  
+  code <- state.abb[match((map_state$State),state.name)] # Convert long state name to abbreviation
+  code <- as.factor(code)
+  map_state$CODE <- code
+  
+  # give state boundaries a white border
+  l <- list(color = toRGB("white"), width = 2)
+  # specify some map projection/options
+  g <- list(
+    scope = 'usa',
+    projection = list(type = 'albers usa'),
+    showlakes = TRUE,
+    lakecolor = toRGB('white')
+  )
+  
+  plot_map <- plot_geo(map_state, locationmode = 'USA-states') %>%
+    add_trace(
+      z = ~AvgTemp, text = ~State, locations = ~code,
+      color = ~AvgTemp, colors = 'Reds'
+    ) %>%
+    colorbar(title = "Temperature") %>%
+    layout(
+      title = paste(year,"Temperature Map",sep=" "),
+      geo = g
+    )
+  
+  print(plot_map)
+  
 }
 
 #' @title Plot Temperature Geographic Maps by Country
