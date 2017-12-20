@@ -125,22 +125,25 @@ ui <- navbarPage("Temperatures and AQI",
                                                        choices = c("GlobalLandTemperaturesByCountry","GlobalLandTemperaturesByState"),
                                                        selected = "GlobalLandTemperaturesByCountry"), # Choose analysis with which dataset
                                           
+                                          numericInput("yearMap", "Year", 
+                                                       min = 1743, max = 2013, 
+                                                       value = 2000),                    # Use this input year when you select FALSE in Temperature
+                            
                                           radioButtons("tempVar", "Temperature Variation", # Select TRUE if you want to analyze temperature
                                                        choices = c("FALSE","TRUE"),        # variation between two year.
                                                        selected = "FALSE"),
                                           
                                           sliderInput("yearVar", "Year for Temperature Variation ", 
                                                       min = 1743, max = 2013,
-                                                      value = c(2000, 2013)),             # Use this slider when analyze temperature variation
-                                          
-                                          numericInput("yearMap", "Year", 
-                                                       min = 1743, max = 2013, 
-                                                       value = 2000)),                    # Use this input year when you select FALSE in Temperature
+                                                      value = c(2000, 2013)
+                                                      )            # Use this slider when analyze temperature variation
+         
+                                          ),                   
                             # Variation button
                             mainPanel(wellPanel(           
                               conditionalPanel(
                                 condition = "input.datasetMap == 'GlobalLandTemperaturesByState'",
-                                plotOutput("plotMap")
+                                plotlyOutput("plotMap")
                               ),
                               
                               conditionalPanel(
@@ -293,7 +296,7 @@ server <- function(input, output) {
     }
   })
   
-  output$plotMap <- renderPlot({
+  output$plotMap <- renderPlotly({
     if (input$datasetMap=="GlobalLandTemperaturesByState"){
       data<-state_temp
       temp_state(data,input$yearMap)
