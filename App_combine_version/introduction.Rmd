@@ -111,11 +111,21 @@ You can select multiple inputs for cities and pollutants to do comparison. Use t
   <br/>
 
 #### Cluster(Yiquan)
++ **Data**
 
+The data comes from annual aqi by cbsa. For the pollution part, the variables are percentage of a certain pollutants because some of the original data are zero. For the health part, the input variable is the number of different situations of days(Good, unhealthy, etc). The cluster count is the number of clusters you want to divide.
 
 ### Map
 
 #### Air Quality Map (Yiquan)
+
++ **Input Selection**
+
+The year is the certain year you want to specify to get to know about the air quality of the United States. The color is the kind of color you want to display in the state map.
+
++ **Note**
+
+The data is from the center of disease control. The air quality is a combination of the ozone and PM2.5. 
 
 #### Temperature Map
 
@@ -153,6 +163,14 @@ When you choose true for temperature variation, you can then analyze how tempera
 **Note:** the Year for Temperature Variation slider should only be used when you select the GlobalLandTemperaturesByCountry dataset.
 
 ### Calculator(Yiquan)
+
++ **Input Selection**
+
+The City has certain information about the air quality of that city you choose. Smoking is whether you smoke or not, if you smoke then select "yes". Exercise is whether you exercise or not, if you do, select "yes". Gene is whether your family has certain kind of gene that may cause disease, if they do, select "yes".
+
++ **Usage**
+
+This part mainly calculate the summary statistic of the city you choose. For the health part, it gives a brief result of your health condition.
 
 ### Temperature Trend
 
