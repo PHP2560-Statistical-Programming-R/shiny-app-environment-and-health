@@ -43,9 +43,10 @@ aqi_healthconcern<-function(data=annual_aqi,cbsa,
   } else{
     healthconcern %>%
       tidyr::gather("id", "Percentage", (ncol(healthconcern)-length(category)+1):ncol(healthconcern)) %>%
-      ggplot(., aes(Year, Percentage))+
+      ggplot(., aes(as.factor(Year), Percentage))+
       geom_bar(stat = "identity",aes(fill = CBSA), position = "dodge")+
       facet_wrap(~id,scales="free_y")+
+      labs(x="Year")+
       theme_bw()
   }
 

@@ -71,7 +71,7 @@ ui <- navbarPage("Temperatures and AQI",
                             mainPanel(wellPanel(           
                               conditionalPanel(
                                 condition = "input.datasetMap == 'GlobalLandTemperaturesByState'",
-                                plotOutput("plotMap")
+                                plotlyOutput("plotMap")
                               ),
                               
                               conditionalPanel(
@@ -212,7 +212,7 @@ server <- function(input, output) {
     }
   })
   
-  output$plotMap <- renderPlot({
+  output$plotMap <- renderPlotly({
     if (input$datasetMap=="GlobalLandTemperaturesByState"){
       data<-state_temp
       temp_state(data,input$yearMap)
