@@ -1,6 +1,6 @@
 ---
 title: "APP INTRODUCTION"
-output: html_document
+output: html_fragment
   
 ---
 
@@ -54,7 +54,7 @@ This boxplot can show you how AQI distributed from 2000-2017. You can use the no
 + **Inputs Selection**: 
 <br/>
 <div style="text-align:center" markdown="1";width:200px; height=200px>
-![Boxplot Inputs Selection](app_screenshot/box_inputs.png)
+![Boxplot Inputs Selection](app_screenshot/box_inputs.jpg)
 </div>
 
 You can use the Year slider change the time period. We set the default value at 2000-2017 (the longest time period for Annual AQI dataset).
@@ -65,7 +65,7 @@ Select the CBSA you are interested and then red spots on the boxplots can tell y
 
 <br/>
 <div style="text-align:center";width:100px>
-![Boxplot of AQI](app_screenshot/boxplot.png)
+![Boxplot of AQI](app_screenshot/boxplot.jpg)
 </div>
 
 Using the default value of each selection, the boxplots display as above.
@@ -78,7 +78,7 @@ You can use the Health Concern Plot analyze the trend of percentage of each heal
 
 <br/>
 <div style="text-align:center";width:100px>
-![Health Concern Plot Inputs Seletion](app_screenshot/hc_inputs.png)
+![Health Concern Plot Inputs Seletion](app_screenshot/hc_inputs.jpg)
 </div>
 
 Choose year period, CBSA and Health Concern Levels you want to analyze. You can select multiple CBSAs and Health Concern Levels to do comparison analyses. The picture above show you the default values of each selection.
@@ -93,11 +93,11 @@ For users who want to do comparison only in one or a few years, select bar plot 
 
   <br/>
 
-![Health Concern Line Plot](app_screenshot/line_plot.png)
+![Health Concern Line Plot](app_screenshot/line_plot.jpg)
   
   <br/>
   
-![Health Concern Bar Plot](app_screenshot/bar_plot.png)
+![Health Concern Bar Plot](app_screenshot/bar_plot.jpg)
 #### Pollutant AQI Trend
 
 You can use these time series plots to analyze the trend of AQI by pollutant. 
@@ -107,17 +107,17 @@ You can use these time series plots to analyze the trend of AQI by pollutant.
 You can select multiple inputs for cities and pollutants to do comparison. Use the Year slider to choose the time period (Default value is 2000-2016).
 
   <br/>
-![Health Concern Bar Plot](app_screenshot/Pollutant_Trend.png)
+![Health Concern Bar Plot](app_screenshot/Pollutant_Trend.jpg)
   <br/>
 
-#### Cluster(Yiquan)
+#### Cluster
 + **Data**
 
 The data comes from annual aqi by cbsa. For the pollution part, the variables are percentage of a certain pollutants because some of the original data are zero. For the health part, the input variable is the number of different situations of days(Good, unhealthy, etc). The cluster count is the number of clusters you want to divide.
 
 ### Map
 
-#### Air Quality Map (Yiquan)
+#### Air Quality Map 
 
 + **Input Selection**
 
@@ -132,8 +132,9 @@ The data is from the center of disease control. The air quality is a combination
 + **Inputs Selection**
 
   <br/>
-![Health Concern Bar Plot](app_screenshot/map_inputs.png)
-
+  <div style="text-align:center";width:100px>
+![Health Concern Bar Plot](app_screenshot/map_inputs.jpg)
+</div>
   <br/>
   
   Use the two datasets analyze temperature by countries or states.
@@ -144,25 +145,25 @@ When the default value for temperature variation is false, the map will show the
 
 <br/>
 <div style="text-align:center";width:200px>
-![Temperature Map by Country](app_screenshot/country_temp.png)
+![Temperature Map by Country](app_screenshot/country_temp.jpg)
 
 </div>
 
 <br/>
 <div style="text-align:center";width:200px>
-![Temperature Map by State](app_screenshot/state_temp.png)
+![Temperature Map by State](app_screenshot/state_temp.jpg)
 </div>
 
 When you choose true for temperature variation, you can then analyze how temperature changed during the time period you select through the Year for Temperature Variation slider.
 
 <br/>
 <div style="text-align:center";width:200px>
-![Temperature Variation Map by Country](app_screenshot/var_temp.png)
+![Temperature Variation Map by Country](app_screenshot/var_temp.jpg)
 
 </div>
 **Note:** the Year for Temperature Variation slider should only be used when you select the GlobalLandTemperaturesByCountry dataset.
 
-### Calculator(Yiquan)
+### Calculator
 
 + **Input Selection**
 
@@ -186,7 +187,7 @@ When you choose global temperature dataset, the graphs will display properly for
 
 <br/>
 <div style="text-align:center";width:200px>
-![Temperature Variation Map by Country](app_screenshot/glb_temp.png)
+![Temperature Variation Map by Country](app_screenshot/glb_temp.jpg)
 
 </div>
 
@@ -194,7 +195,7 @@ When you choose global land temperature by country dataset and want to compare t
 
 <br/>
 <div style="text-align:center";width:200px>
-![Temperature Variation Map by Country](app_screenshot/country_temp_trend.png)
+![Temperature Variation Map by Country](app_screenshot/country_temp_trend.jpg)
 </div>
 
 + **Confidence Interval**
@@ -203,6 +204,6 @@ You can choose to display confidence interval around smooth.
 
 <br/>
 <div style="text-align:center; width:200px">
-![Temperature Variation Map by Country](app_screenshot/ci.png)
+![Temperature Variation Map by Country](app_screenshot/confidence.jpg)
 
 </div>
