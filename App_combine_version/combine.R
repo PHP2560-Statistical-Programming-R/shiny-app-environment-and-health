@@ -111,13 +111,13 @@ ui <- navbarPage("Environment and Health",
                  ),
                  navbarMenu("Map",
                             tabPanel("Air Quality Map",
-                              fluidPage(headerPanel("AirQuality"),
+                              fluidPage(headerPanel("Air Quality"),
                                                           sidebarPanel(
                                                           numericInput("yearaqm", "Year", 2005, min = 1999, max = 2013), #Choosing year you want to observe
                                                           radioButtons("color","Color",choices = c('Blues','Reds','Purples'), 
                                                                          selected = 'Purples') #Choosing different state background color
                                                           ),
-                                                          mainPanel(plotlyOutput("map"))
+                                                          mainPanel(plotlyOutput("AQImap"))
                               )
                             ),
                             tabPanel("Temperature Map",
@@ -417,7 +417,7 @@ server <- function(input, output) {
   })
   
   source("R/statemap.R")
-  output$map <- renderPlotly(checkAirQuality(data = AirQuality_Tracking,year=input$yearaqm, 
+  output$AQImap <- renderPlotly(checkAirQuality(data = AirQuality_Tracking,year=input$yearaqm, 
                                              Color = input$color))
   
   source("R/stat.R")
