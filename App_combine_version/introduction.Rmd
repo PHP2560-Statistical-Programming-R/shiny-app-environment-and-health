@@ -10,7 +10,7 @@ The Environment and Health App is to help users analyze and visualize environmen
 
 In terms of dataset used in the app, users can analyze Air Quality Index (AQI) and global temperature data.
 
-##Audience
+## Audience
 
 Environmental engineers and people who are interested in analyzing environmental data and concerned with the relationship between environment and health status.
 
