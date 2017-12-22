@@ -39,7 +39,7 @@ ui <- navbarPage("Temperatures and AQI",
                                           value = c(1, 12)),
                               
                               selectizeInput("CountryInput", "Country", unique(country_temp$Country), 
-                                             selected = NULL, multiple = T)
+                                             selected = c("United States", "Canada"), multiple = T)
                             ),
                             
                             tags$hr(),
@@ -70,11 +70,13 @@ ui <- navbarPage("Temperatures and AQI",
                                                                                           # Variation button
                             mainPanel(wellPanel(           
                               conditionalPanel(
+                                # When select GlobalLandTemperaturesByState, show state temperature map
                                 condition = "input.datasetMap == 'GlobalLandTemperaturesByState'",
                                 plotlyOutput("plotMap")
                               ),
                               
                               conditionalPanel(
+                                # When select GlobalLandTemperaturesByCountry, show country temperature map
                                 condition = "input.datasetMap == 'GlobalLandTemperaturesByCountry'",
                                 plotlyOutput("plotMap2")
                               )                 
@@ -94,7 +96,7 @@ ui <- navbarPage("Temperatures and AQI",
                               sliderInput("YearAQI", "Year", min=2000, max=2017, value= c(2000,2017)),
                               
                               uiOutput("CBSAcontrols"), # If choose Boxplot, the CBSA input cannot be multiple
-                              
+                                                        # If choose health concern by AQI plot, you can input multiple choices for CBSAs
                               selectizeInput("categoryInput", "Health Concern Level", 
                                              c("Good","Moderate","UnhealthyForSensitiveGroup","Unhealthy",
                                                "VeryUnhealthy","Hazardous"), 
@@ -124,6 +126,7 @@ ui <- navbarPage("Temperatures and AQI",
                             tags$hr(),
                             tableOutput("AQI"))
                           )),
+                 
                  tabPanel("Pollutant AQI Trend",
                           sidebarLayout(
                             
@@ -246,7 +249,7 @@ server <- function(input, output) {
     }
   })
   
-
+# Reset Buttons for AQI plot
   observeEvent(
     input$reset_input,{
     shinyjs::reset("side-panel")
@@ -288,7 +291,8 @@ server <- function(input, output) {
            x="Time",
            y="Average AQI")
   })
-  
+
+  # Reset Buttons for AQI Pollutant Trend
   observeEvent(
     input$resetAll,{
       shinyjs::reset("ResetTrend")
