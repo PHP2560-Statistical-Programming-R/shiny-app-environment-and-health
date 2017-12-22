@@ -2,11 +2,11 @@
 
 ## Overview
 
-The Environment and Health App is to help users to analyze and visualize data about environment and health. It can be used to do horizontal analyses among different countries, states and cities. You can also use it to do time series analyses.
+The Environment and Health App is to help users analyze and visualize environmental and health data. It can be used to do horizontal analyses among different countries, states and cities. You can also use it to do time series analyses. Besides, you can get summary statistics and evaluate your health status based on personal characteristics.
 
 ##Audience
 
-Environmental engineer and people who are interested in analyzing environmental data and concerned with the relationship between environment and health status.
+Environmental engineers and people who are interested in analyzing environmental data and concerned with the relationship between environment and health status.
 
 ## Dataset Overview
 
@@ -16,13 +16,13 @@ Environmental engineer and people who are interested in analyzing environmental 
 
 * The U.S. pollution dataset contains four major pollutants (Nitrogen Dioxide, Sulphur Dioxide, Carbon Monoxide and Ozone) AQI data for every day from 2000-2016. All the data is scraped from the database of U.S. [EPA](https://aqsdr1.epa.gov/aqsweb/aqstmp/airdata/download_files.html)
 
-* AirQualityTracking dataset contains (Yiquan)
+* AirQualityTracking dataset contains different air quality values of different state. The dataset was from Center for Disease Control and the air quality was a combination of ozone and PM2.5. 
 
 ### Global temperature datasets
 
 Notes: There are some missing values in the following datasets, which leads to the incompleteness of the temperature map in some year.
 
-* Global Temperature contains global land average temperature from 1750-2015. Note: there are some missing values in this dataset.
+* Global Temperature contains global land average temperature from 1750-2015. 
 
 * Global Land Temperature by Country dataset contains global land average temperature from 11/1743-09/2015. 
 
@@ -72,14 +72,12 @@ The year is the certain year you want to specify to get to know about the air qu
 The data is from the center of disease control. The air quality is a combination of the ozone and PM2.5. 
 
 #### Temperature Map
-
   
 Use the two datasets analyze temperature by countries or states.
 
 When the default value for temperature variation is false, the map will show the temperature in specific year according to the Year input. 
 
 When you choose true for temperature variation, you can then analyze how temperature changed during the time period you select through the Year for Temperature Variation slider.
-
 
 ### Calculator
 
