@@ -4,7 +4,7 @@
 
 The Environment and Health App is to help users analyze and visualize environmental and health data. It can be used to do horizontal analyses among different countries, states and cities. You can also use it to do time series analyses. Besides, you can get summary statistics and evaluate your health status based on personal characteristics.
 
-##Audience
+## Audience
 
 Environmental engineers and people who are interested in analyzing environmental data and concerned with the relationship between environment and health status.
 
