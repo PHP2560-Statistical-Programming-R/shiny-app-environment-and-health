@@ -138,7 +138,7 @@ ui <- navbarPage("Temperatures and AQI",
                               
                               sliderInput("YearP", "Year", min=2000, max=2016, value= c(2000,2016)),
                               
-                              selectizeInput("Pollutant", "pollutant", c("AverageNo2","AverageO3", "AverageSo2", "AverageCo"), 
+                              selectizeInput("Pollutant", "Pollutant", c("AverageNo2","AverageO3", "AverageSo2", "AverageCo"), 
                                              selected = c("AverageNo2"), multiple = T)
                             ),
                             tags$hr(),
