@@ -35,25 +35,28 @@ Environmental engineers and people who are interested in analyzing environmental
 
 ### Global temperature datasets
 
-Notes: There are some missing values in the following datasets, which leads to the incompleteness of the temperature map in some year.
+* Global Temperature contains global land average temperature from 1750 to 2015. 
 
-* Global Temperature contains global land average temperature from 1750-2015. Note: there are some missing values in this dataset.
+* Global Land Temperature by Country dataset contains global land average temperature from 11/1743 to 09/2015. 
 
-* Global Land Temperature by Country dataset contains global land average temperature from 11/1743-09/2015. 
+* Global Land Temperature by State dataset contains global land average temperature from 11/1743 to 09/2015.
 
-* Global Land Temperature by State dataset contains global land average temperature from 11/1743-09/2015.
+**Notes**
+
+There are some missing values in the following datasets, which leads to the incompleteness of the temperature map in some year.
 
 ## Guide to App
 
 ### Air Quality Index
 
-#### AQI Plot
+#### 1. AQI Plot
 
 ##### Analysis selection - Boxplot of AQI
 
-This boxplot can show you how AQI distributed from 2000-2017. You can use the notches on the boxplots to analyze whether there is strong evidence (95% confidence) that their medians differ, whether the median changed much during specific time period and whether the distribution approximate to normal distribution or it was skewed.
+This boxplot can show you how AQI distributed from 2000-2017. You can use the notches on the boxplots to analyze whether there is strong evidence (95% confidence) that their medians differ, whether the median changed much during specific time period and whether the distribution approximated to normal distribution or it was skewed.
 
-###### Inputs Selection 
++ **Inputs Selection**
+
 <br/>
 <div style="text-align:center" markdown="1";width:200px; height=200px>
 ![Boxplot Inputs Selection](app_screenshot/box_inputs.png)
@@ -63,7 +66,7 @@ You can use the Year slider change the time period. We set the default value at 
 
 Select the CBSA you are interested and then red spots on the boxplots can tell you how the air quality in that area was compared to other CBSAs in each year (Above median or below median). The default value of CBSA is Providence.
 
-###### Boxplot of AQI
++ **Boxplot of AQI**
 
 <br/>
 <div style="text-align:center";width:100px>
@@ -76,44 +79,50 @@ Using the default value of each selection, the boxplots display as above.
 
 You can use the Health Concern Plot analyze the trend of percentage of each health concern level during a specific time period and compare the percentage among CBSAs.
 
-###### Inputs Selection
++ **Inputs Selection**
 
 <br/>
 <div style="text-align:center";width:100px>
 ![Health Concern Plot Inputs Seletion](app_screenshot/hc_inputs.png)
 </div>
 
-Choose year period, CBSA and Health Concern Levels you want to analyze. You can select multiple CBSAs and Health Concern Levels to do comparison analyses. The picture above show you the default values of each selection.
+Choose year period, CBSA and Health Concern Levels you want to analyze. You can select multiple CBSAs and Health Concern Levels to do comparison analyses. The picture above shows you the default values of each selection.
 
-###### Plot Selection
++ **Plot Selection**
 
 For users who want to do comparison during a relatively long time period, the better choice is to select line plot and analyze the trend.
 
 For users who want to do comparison only in one or a few years, select bar plot here. For example, if users want to compare the percentage of health concern levels between different CBSAs only in a specific year (2008), choose bar plot and the graph will display properly.
 
-###### Health Concern Plot
++ **Health Concern Plot**
 
-  <br/>
-
+<br/>
+<div style="text-align:center";width:100px>
 ![Health Concern Line Plot](app_screenshot/line_plot.png)
+</div>
+<br/>
   
-  <br/>
+<div style="text-align:center";width:100px>
   
 ![Health Concern Bar Plot](app_screenshot/bar_plot.png)
-
-#### Pollutant AQI Trend
+</div>
+<br/>
+  
+#### 2. Pollutant AQI Trend
 
 You can use these time series plots to analyze the trend of AQI by pollutant. 
 
-##### Inputs Selection
++ **Inputs Selection**
 
 You can select multiple inputs for cities and pollutants to do comparison. Use the Year slider to choose the time period (Default value is 2000-2016).
 
-  <br/>
-![Health Concern Bar Plot](app_screenshot/Pollutant_Trend.png)
-  <br/>
+<br/>
+<div style="text-align:center";width:100px>
+![Pollutant Trend](app_screenshot/Pollutant_Trend.png)
+</div>
+<br/>
 
-#### Cluster
+#### 3. Cluster
 
 ##### Data
 
@@ -121,31 +130,31 @@ The data comes from annual aqi by cbsa. For the pollution part, the variables ar
 
 ### Map
 
-#### Air Quality Map 
-
-##### Input Selection
-
-The year is the certain year you want to specify to get to know about the air quality of the United States. The color is the kind of color you want to display in the state map.
-
-**Note**
-
-The data is from the center of disease control. The air quality is a combination of the ozone and PM2.5. 
-
-#### Temperature Map
+#### 1. Air Quality Map 
 
 ##### Inputs Selection
 
-  <br/>
-  <div style="text-align:center";width:100px>
-![Health Concern Bar Plot](app_screenshot/map_inputs.png)
+The year is the certain year you want to specify to get to know about the air quality of the United States. The color is the kind of color you want to display in the state map.
+
+**Notes**
+
+The data is from the center of disease control. The air quality is a combination of the ozone and PM2.5. 
+
+#### 2. Temperature Map
+
+##### Inputs Selection
+
+<br/>
+<div style="text-align:center";width:100px>
+![Temperature Map Inputs](app_screenshot/map_inputs.png)
 </div>
-  <br/>
+<br/>
   
   Use the two datasets analyze temperature by countries or states.
 
-**Note** 
+**Notes** 
 
-There are some missing values for some countries or states which caused the incompleteness of the map in specific year.
+There are some missing values for some countries or states which caused the incompleteness of the map in specific year. Because the datasets used for map are kind of large, it may take relatively long time for loading.
 
 When the default value for temperature variation is false, the map will show the temperature in specific year according to the Year input. 
 
@@ -167,13 +176,14 @@ When you choose true for temperature variation, you can then analyze how tempera
 ![Temperature Variation Map by Country](app_screenshot/var_temp.png)
 
 </div>
-**Note** 
+
+**Notes** 
 
 The Year for Temperature Variation slider should only be used when you select the GlobalLandTemperaturesByCountry dataset.
 
 ### Calculator
 
-#### Input Selection
+#### Inputs Selection
 
 The City has certain information about the air quality of that city you choose. Smoking is whether you smoke or not, if you smoke then select "yes". Exercise is whether you exercise or not, if you do, select "yes". Gene is whether your family has certain kind of gene that may cause disease, if they do, select "yes".
 
@@ -195,7 +205,7 @@ When you choose global temperature dataset, the graphs will display properly for
 
 <br/>
 <div style="text-align:center";width:200px>
-![Temperature Variation Map by Country](app_screenshot/glb_temp.png)
+![Global Temperature Trend](app_screenshot/glb_temp.png)
 
 </div>
 
@@ -208,10 +218,11 @@ When you choose global land temperature by country dataset and want to compare t
 
 #### Confidence Interval
 
-You can choose to display confidence interval around smooth.
+You can also choose to display confidence interval around smooth.
 
 <br/>
 <div style="text-align:center; width:200px">
-![](app_screenshot/ci.png)
+![confidence interval](app_screenshot/ci.png)
 
 </div>
+<br/>
