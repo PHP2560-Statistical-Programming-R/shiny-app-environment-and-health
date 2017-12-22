@@ -33,7 +33,8 @@ ui <- navbarPage("Environment and Health",
                                              
                                              sliderInput("YearAQI", "Year", min=2000, max=2017, value= c(2000,2017)),
                                              
-                                             uiOutput("CBSAcontrols"), # If choose Boxplot, the CBSA input cannot be multiple
+                                             uiOutput("CBSAcontrols"), # If choose Boxplot, the CBSA inputs cannot be multiple
+                                                                       # If choose health concern by AQI plot, you can input multiple choices for CBSAs
                                              
                                              selectizeInput("categoryInput", "Health Concern Level", 
                                                             c("Good","Moderate","UnhealthyForSensitiveGroup","Unhealthy",
@@ -221,7 +222,7 @@ ui <- navbarPage("Environment and Health",
                                               value = c(1, 12)),
                                   
                                   selectizeInput("CountryInput", "Country", unique(country_temp$Country), 
-                                                 selected = NULL, multiple = T)
+                                                 selected = c("United States", "Canada"), multiple = T)
                               ),
                               
                               tags$hr(),
@@ -240,6 +241,7 @@ server <- function(input, output) {
   source("R/map_temp.R")
   source("R/boxplot_aqi.R")
   source("R/aqi_healthconcern.R")
+  
   # Show temperature trend
   
   output$trendplot <- renderPlot({
@@ -275,6 +277,7 @@ server <- function(input, output) {
   }
   )
   
+  # Reset Buttons for Temperature Trend
   observeEvent(
     input$resetCountry,{
       shinyjs::reset("CountryInput")
@@ -287,6 +290,7 @@ server <- function(input, output) {
   
   # Show temperature map
   output$plotMap2 <- renderPlotly({
+    # Select GlobalLandTemperaturesByCountry dataset
     if (input$datasetMap=="GlobalLandTemperaturesByCountry"){
       data<-country_temp
       if (input$tempVar=="FALSE"){
@@ -298,6 +302,7 @@ server <- function(input, output) {
   })
   
   output$plotMap <- renderPlotly({
+    # Select GlobalLandTemperaturesByState
     if (input$datasetMap=="GlobalLandTemperaturesByState"){
       data<-state_temp
       temp_state(data,input$yearMap)
@@ -307,15 +312,20 @@ server <- function(input, output) {
   # Show AQI plot
   
   output$CBSAcontrols<-renderUI({
+    # Multiple choices for CBSA is false for boxplot
+    
     if (input$AnalysisType=="Boxplot of AQI"){
       selectizeInput("CBSA_aqi", "CBSA", unique(annual_aqi$CBSA), 
                      selected = c("Providence-Warwick, RI-MA"), multiple = F)
     } else {
+      # Multiple choices for CBSA is true for boxplot
+      
       selectizeInput("CBSA_aqi", "CBSA", unique(annual_aqi$CBSA), 
                      selected = c("Providence-Warwick, RI-MA"), multiple = T)
     }
   })
   
+  # Output boxplot
   output$BoxPlot<-renderPlot(
     {
       if (input$AnalysisType=="Boxplot of AQI"){
@@ -324,6 +334,7 @@ server <- function(input, output) {
     }
   )
   
+  # Output Health concern plot
   output$HealthConcern <- renderPlot({
     if (input$AnalysisType=="Health Concern By AQI"){
       aqi_healthconcern(annual_aqi, cbsa=input$CBSA_aqi, category=input$categoryInput,
@@ -331,7 +342,7 @@ server <- function(input, output) {
     }
   })
   
-  
+  # Reset buttons for AQI plot
   observeEvent(
     input$reset_input,{
       shinyjs::reset("side-panel")
@@ -374,6 +385,7 @@ server <- function(input, output) {
            y="Average AQI")
   })
   
+  # Reset Buttons for AQI Pollutant Trend
   observeEvent(
     input$resetAll,{
       shinyjs::reset("ResetTrend")
@@ -389,6 +401,8 @@ server <- function(input, output) {
       shinyjs::reset("Pollutant")
     })
   
+  # Show cluster
+  
   selectedData <- reactive({
     aqi[, c(input$xcol, input$ycol)]
   })
@@ -401,6 +415,7 @@ server <- function(input, output) {
   clus <- reactive({
     kmeans(Data(), input$clus)
   })
+  
   output$pollution <- renderPlot({
     par(mar = c(5.1, 4.1, 0, 1))
     plot(selectedData(),
@@ -408,6 +423,7 @@ server <- function(input, output) {
          pch = 20, cex = 3)
     points(clusters()$centers, pch = 4, cex = 4, lwd = 4)
   })
+  
   output$health <- renderPlot({
     par(mar = c(5.1, 4.1, 0, 1))
     plot(Data(),
@@ -416,17 +432,19 @@ server <- function(input, output) {
     points(clus()$centers, pch = 4, cex = 4, lwd = 4)
   })
   
+  # Show AQI map
   source("R/statemap.R")
   output$AQImap <- renderPlotly(checkAirQuality(data = AirQuality_Tracking,year=input$yearaqm, 
                                              Color = input$color))
   
+  # Show health status calculator
   source("R/stat.R")
   source("R/health_status.R")
   output$stat <- renderTable(stat_func(data = annual_aqi, cbsa = input$city))
   output$health_text <- renderText(health_status(data = annual_aqi, cbsa = input$city, year = input$yearcal,
                                             smoke = input$smoke, exercise = input$exercise,
                                             gene = input$gene))
-
+  # Add image
   output$picture <-renderText({
     c(
       '<img src="',
